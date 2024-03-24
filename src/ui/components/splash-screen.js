@@ -1,11 +1,51 @@
 import {html, Component} from '../lib.js'
 import gsap from '../animations.js'
+const textBase = {
+	lang: 'vi',
+	textTranslate() {
+		const lang = this.getLang() || 'vi'
+		if (lang === 'vi') {
+			return {
+				Play: 'Chơi',
+				Tutorial: 'Hướng dẫn',
+				Collection: 'Bộ sưu tập',
+				Highscores: 'Xếp hạng',
+				Changelog: 'Thay đổi',
+				Manual: 'Hướng dẫn',
+				Language: 'Ngôn ngữ',
+			}
+		} else if (lang === 'en') {
+			return {
+				Play: 'Play',
+				Tutorial: 'Tutorial',
+				Collection: 'Collection',
+				Highscores: 'Highscores',
+				Changelog: 'Changelog',
+				Manual: 'Manual',
+				Language: 'Language',
+			}
+		}
+	},
+	getLang() {
+		// get cookie
+		if (document.cookie) {
+			const lang = document.cookie.split(';').find((c) => c.includes('lang'))
+			if (lang) {
+				this.lang = lang.split('=')[1]
+			}
+		} else {
+			this.lang = 'en'
+		}
+		return this.lang
+	},
+}
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
 		gsap.from(this.base, {duration: 0.4, autoAlpha: 0, scale: 0.98})
-		gsap.to(this.base.querySelector('.Splash-spoder'), {delay: 5, x: 420, y: 60, duration: 3})
+		gsap.to(this.base.querySelector('.Splash-spoder'), {delay: 3, x: 420, y: 60, duration: 1})
 	}
+
 	render(props) {
 		return html`
 			<article class="Container Splash--fadein">
@@ -22,11 +62,20 @@ export default class SplashScreen extends Component {
 								<li><button onClick=${props.onNewGame}>New Game</a></li>
 					`
 							: html`
-							<li><button autofocus onClick=${props.onNewGame}>Play</a></li>
-							<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
+							<li><button autofocus onClick=${props.onNewGame}>
+								${textBase.textTranslate()['Play']}
+							</a></li>
+							<li><a class="Button" href="/?debug&tutorial">
+								${textBase.textTranslate()['Tutorial']}
+							</a></li>
 							`}
-						<li><a class="Button" href="/collection">Collection</a></li>
-						<li><a class="Button" href="/stats">Highscores</a></li>
+						${html`<li>
+							<a class="Button" href="/collection">${textBase.textTranslate()['Collection']}</a>
+						</li>`}
+						${html`<li><a class="Button" href="/stats">${textBase.textTranslate()['Highscores']}</a></li>`}
+						${html`<li>
+							<a class="Button ChangeLang" href="/lang">${textBase.textTranslate()['Language']}</a>
+						</li>`}
 					</ul>
 					<p center>
 						<small><a href="/changelog">Changelog</a> & <a href="/manual">Manual</a></small>
