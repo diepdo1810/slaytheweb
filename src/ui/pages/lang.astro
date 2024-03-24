@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+import '../styles/common.css'
+
+export const lang = 'vi'
+export const title = 'lang'
+export const description = 'lang'
+
+---
+
+<Layout title="lang">
+	<div class="container">
+    <div class="Box">
+			<h1 class="text-center">Welcome to slay game of the team z153</h1>
+			<p class="text-center">
+				Enjoy the game.
+			</p>
+      <ul class="Options">
+				<li class="d-flex justify-content-center">
+					<a class="Button max-width-25" href="/" id="lang-en">English</a>
+				</li>
+				<li class="d-flex justify-content-center">
+					<a class="Button max-width-25" href="#" id="lang-vi">Vietnamese</a>
+				</li>
+        <li class="d-flex justify-content-center">
+					<a class="Button max-width-25" href="/">Back</a>
+				</li>
+      </ul>
+		</div>
+    </div>
+</Layout>
+
+<script>
+	const langButtonVi = document.querySelector('#lang-vi')
+	const langButtonEn = document.querySelector('#lang-en')
+	langButtonVi.addEventListener('click', () => {
+		insertCookie('vi')
+	})
+	langButtonEn.addEventListener('click', () => {
+		insertCookie('en')
+	})
+
+	const insertCookie = (lang) => {
+		document.cookie = `lang=${lang}; path=/`
+		window.location.reload()
+		window.location.href = '/'
+	}
+</script>
